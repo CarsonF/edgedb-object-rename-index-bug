@@ -39,10 +39,12 @@ module default {
     };
   }
 
-  type TranslationProject extending Project {
+  abstract type NewTranslationProject extending Project {
     multi link engagements := .<project[is LanguageEngagement];
     multi link languages := .engagements.language;
   }
+
+  type TranslationProject extending NewTranslationProject;
 
   type Language extending Named {
     projects := (
