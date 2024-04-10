@@ -39,19 +39,21 @@ module default {
     };
   }
 
-  type TranslationProject extending Project {
+  abstract type NewTranslationProject extending Project {
     multi link engagements := .<project[is LanguageEngagement];
     multi link languages := .engagements.language;
   }
 
+  type TranslationProject extending NewTranslationProject;
+
   type Language extending Named {
     projects := (
-      select TranslationProject filter __source__ = .languages
+      select NewTranslationProject filter __source__ = .languages
     );
   }
 
   type LanguageEngagement {
-    required project: TranslationProject;
+    required project: NewTranslationProject;
 
     required language: Language {
       readonly := true;
